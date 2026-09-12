@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Report</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px auto;
+        max-width: 1000px;
+        background-color: #f5f5f5;
+    }
+
+    .page-header {
+        margin-bottom: 20px;
+    }
+
+    .project-info {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .project-info h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .project-number {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .project-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #333;
+    color: white;
+}
+.quantity-info {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.quantity-info p {
+    margin: 0;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #fafafa;
+}
+.section-header {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0;
+}
+
+.progress-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.progress-summary div {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.progress-summary strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.progress-summary span {
+    font-size: 24px;
+    font-weight: bold;
+}
+.materials-summary {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.materials-summary strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.materials-summary span {
+    font-size: 24px;
+    font-weight: bold;
+}
+.issue-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.issue-summary div {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.issue-summary strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.issue-summary span {
+    font-size: 24px;
+    font-weight: bold;
+}
+.issue-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.issue-card p {
+    margin: 8px 0;
+}
+.issue-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    font-weight: 500;
+}
+.back-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: #333;
+    color: white;
+}@media (max-width: 700px) {
+
+    body {
+        margin: 20px;
+    }
+
+    .quantity-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .progress-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .issue-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .project-actions {
+        flex-direction: column;
+    }
+
+    .project-actions .button {
+        text-align: center;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+   <div class="page-header">
+    <h1>Project Report</h1>
+</div>
+
+<div class="project-info">
+
+    <h2>
+        {{ project.name }}
+    </h2>
+
+    <p class="project-number">
+        Project No: {{ project.project_number }}
+    </p>
+
+    <hr>
+
+    <p>
+        <strong>Status:</strong>
+        {{ project.get_status_display }}
+    </p>
+
+    <p>
+        <strong>Team Leader:</strong>
+        {{ project.team_leader.email }}
+    </p>
+        <div class="project-actions">
+
+    <a class="button"
+       href="{% url 'assign_project' project.id %}">
+        Assign / Change Team Leader
+    </a>
+
+    <a class="button"
+       href="{% url 'change_project_status' project.id %}">
+        Change Project Status
+    </a>
+
+</div>
+<div class="quantity-info">
+
+    <p>
+        <strong>Planned Quantity:</strong>
+        {{ project.planned_quantity }}
+        {{ project.unit }}
+    </p>
+
+    <p>
+        <strong>Completed Quantity:</strong>
+        {{ project.completed_quantity }}
+        {{ project.unit }}
+    </p>
+
+    <p>
+        <strong>Remaining Quantity:</strong>
+        {{ remaining_quantity }}
+        {{ project.unit }}
+    </p>
+
+    <p>
+        <strong>Completion:</strong>
+        {{ completion_percentage|floatformat:2 }}%
+    </p>
+
+</div>
+
+    <p>
+        <strong>Start Date:</strong>
+        {{ project.start_date }}
+    </p>
+
+    <p>
+        <strong>End Date:</strong>
+        {{ project.end_date }}
+    </p>
+</div>
+    <hr>
+
+    <!-- PROGRESS -->
+<div class="section-header">
+    <h2>Progress</h2>
+</div>
+
+<div class="progress-summary">
+
+    <div>
+        <strong>Total Updates</strong>
+        <span>{{ progress_updates|length }}</span>
+    </div>
+
+    <div>
+        <strong>Total Reported Progress</strong>
+        <span>
+            {{ total_progress_quantity }} {{ project.unit }}
+        </span>
+    </div>
+
+</div>
+
+{% if progress_updates %}
+
+    {% for progress in progress_updates %}
+
+        <div>
+
+            <p>
+                <strong>Date:</strong>
+                {{ progress.date }}
+            </p>
+
+            <p>
+                <strong>Completed:</strong>
+                {{ progress.completed_quantity }}
+                {{ project.unit }}
+            </p>
+
+            <p>
+                <strong>Remarks:</strong>
+                {{ progress.remarks }}
+            </p>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No progress updates yet.</p>
+
+{% endif %}
+
+
+    <!-- MATERIALS -->
+
+    <div class="section-header">
+    <h2>Materials</h2>
+</div>
+
+<div class="materials-summary">
+    <strong>Total Materials</strong>
+    <span>{{ materials|length }}</span>
+</div>
+    {% for material in materials %}
+
+        <div>
+
+            <p>
+                <strong>Name:</strong>
+                {{ material.name }}
+            </p>
+
+            <p>
+                <strong>Quantity:</strong>
+                {{ material.quantity }}
+                {{ material.unit }}
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                {{ material.date }}
+            </p>
+
+            <p>
+                <strong>Remarks:</strong>
+                {{ material.remarks }}
+            </p>
+
+        </div>
+
+        <hr>
+
+    {% empty %}
+
+        <p>No materials added yet.</p>
+
+    {% endfor %}
+
+
+    <!-- ISSUES -->
+<div class="section-header">
+    <h2>Issues</h2>
+</div>
+
+<div class="issue-summary">
+
+    <div>
+        <strong>Total Issues</strong>
+        <span>{{ issues|length }}</span>
+    </div>
+
+    <div>
+        <strong>Open</strong>
+        <span>{{ open_issues }}</span>
+    </div>
+
+    <div>
+        <strong>In Progress</strong>
+        <span>{{ in_progress_issues }}</span>
+    </div>
+
+    <div>
+        <strong>Resolved</strong>
+        <span>{{ resolved_issues }}</span>
+    </div>
+
+</div>
+
+    {% for issue in issues %}
+
+        <div class="issue-card">
+
+            <p>
+                <strong>Title:</strong>
+                {{ issue.title }}
+            </p>
+
+            <p>
+    <strong>Status:</strong>
+    <span class="issue-status">
+        {{ issue.get_status_display }}
+    </span>
+</p>
+
+            <p>
+                <strong>Date:</strong>
+                {{ issue.date }}
+            </p>
+
+            <p>
+                <strong>Description:</strong>
+                {{ issue.description }}
+            </p>
+
+        </div>
+
+
+    {% empty %}
+
+        <p>No issues reported.</p>
+
+    {% endfor %}
+
+
+<div class="back-section">
+    <a class="back-button"
+       href="{% url 'management_dashboard' %}">
+        Back to Management Dashboard
+    </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Worker</title>
+</head>
+<body>
+
+    <h1>Delete Worker</h1>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ worker.name }}</strong>?
+    </p>
+
+    <p>
+        Project:
+        <strong>{{ project.project_number }} - {{ project.name }}</strong>
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit">
+            Yes, Delete Worker
+        </button>
+    </form>
+
+    <br>
+
+    <a href="{% url 'project_detail' project.id %}">
+        Cancel
+    </a>
+
+</body>
+</html>

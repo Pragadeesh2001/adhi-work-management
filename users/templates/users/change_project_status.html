@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Project Status</title>
+</head>
+
+<body>
+
+    <h1>Change Project Status</h1>
+
+    <h2>
+        {{ project.project_number }} - {{ project.name }}
+    </h2>
+
+    <p>
+        <strong>Current Status:</strong>
+        {{ project.get_status_display }}
+    </p>
+
+    <hr>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Save Status
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'management_project_detail' project.id %}">
+        Cancel
+    </a>
+
+</body>
+</html>

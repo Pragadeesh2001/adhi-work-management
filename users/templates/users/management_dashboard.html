@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Management Dashboard</title>
+    <style>
+            body {
+        font-family: Arial, sans-serif;
+        margin: 40px auto;
+        max-width: 1000px;
+        background-color: #f5f5f5;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .logout-btn {
+        display: inline-block;
+        padding: 8px 15px;
+        background-color: #555;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .logout-btn:hover {
+        background-color: #333;
+    }
+
+    .welcome-text {
+        color: #666;
+        font-size: 14px;
+    }
+    .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.summary-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.summary-card h3 {
+    margin-top: 0;
+    font-size: 15px;
+    color: #555;
+}
+
+.summary-card p {
+    margin-bottom: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+@media (max-width: 700px) {
+
+    body {
+        margin: 20px;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+.filter-section {
+    background: white;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.filter-section h2 {
+    margin-top: 0;
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-buttons a {
+    padding: 8px 14px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-buttons a:hover {
+    background-color: #333;
+    color: white;
+}
+.leader-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.leader-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.empty {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 25px 0 15px;
+}
+
+.button {
+    display: inline-block;
+    padding: 9px 15px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #555;
+}
+</style>
+
+</head>
+
+<body>
+
+    <div class="header">
+
+    <div>
+        <h1>Management Dashboard</h1>
+
+        <p class="welcome-text">
+            Welcome, {{ request.user.email }}
+        </p>
+    </div>
+
+    <a class="logout-btn" href="{% url 'logout' %}">
+        Logout
+    </a>
+
+</div>
+    <hr>
+
+ <h2>Summary</h2>
+
+<div class="summary-grid">
+
+    <div class="summary-card">
+        <h3>Team Leaders</h3>
+        <p>{{ total_team_leaders }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>Total Projects</h3>
+        <p>{{ total_projects }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>Not Started</h3>
+        <p>{{ not_started_projects }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>In Progress</h3>
+        <p>{{ in_progress_projects }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>Completed</h3>
+        <p>{{ completed_projects }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>On Hold</h3>
+        <p>{{ on_hold_projects }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>Unassigned Projects</h3>
+        <p>{{ unassigned_projects }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>Open Issues</h3>
+        <p>{{ open_issues }}</p>
+    </div>
+
+</div>
+    <hr>
+
+ <div class="filter-section">
+
+    <h2>Filter Projects</h2>
+
+    <p>
+        <strong>Status:</strong>
+
+        {% if not selected_status %}
+            All
+        {% elif selected_status == "NOT_STARTED" %}
+            Not Started
+        {% elif selected_status == "IN_PROGRESS" %}
+            In Progress
+        {% elif selected_status == "COMPLETED" %}
+            Completed
+        {% elif selected_status == "ON_HOLD" %}
+            On Hold
+        {% endif %}
+    </p>
+
+    <div class="filter-buttons">
+
+        <a href="{% url 'management_dashboard' %}">
+            All
+        </a>
+
+        <a href="?status=NOT_STARTED">
+            Not Started
+        </a>
+
+        <a href="?status=IN_PROGRESS">
+            In Progress
+        </a>
+
+        <a href="?status=COMPLETED">
+            Completed
+        </a>
+
+        <a href="?status=ON_HOLD">
+            On Hold
+        </a>
+
+    </div>
+
+</div>
+
+<hr>
+
+    {% for leader in team_leaders %}
+    <div class="section-header">
+    <h2>Team Leaders</h2>
+
+    <a class="button" href="{% url 'create_project' %}">
+        + Create Project
+    </a>
+</div>
+
+    <div class="leader-card">
+
+        <h3>{{ leader.email }}</h3>
+
+        <a class="button"
+           href="{% url 'management_team_leader' leader.id %}">
+            View Projects
+        </a>
+
+    </div>
+
+{% empty %}
+
+    <div class="empty">
+        <p>No Team Leaders found.</p>
+    </div>
+
+{% endfor %}
+
+<hr>
+
+<div class="section-header">
+    <h2>All Projects</h2>
+</div>
+
+{% for project in all_projects %}
+
+    <div class="leader-card">
+
+        <h3>
+            {{ project.project_number }} - {{ project.name }}
+        </h3>
+
+        <p>
+            <strong>Status:</strong>
+            {{ project.get_status_display }}
+        </p>
+
+        <p>
+            <strong>Team Leader:</strong>
+
+            {% if project.team_leader %}
+                {{ project.team_leader.email }}
+            {% else %}
+                Unassigned
+            {% endif %}
+        </p>
+
+        <p>
+            <strong>Planned:</strong>
+            {{ project.planned_quantity }}
+            {{ project.unit }}
+        </p>
+
+        <p>
+            <strong>Completed:</strong>
+            {{ project.completed_quantity }}
+            {{ project.unit }}
+        </p>
+
+        <a class="button"
+           href="{% url 'management_project_detail' project.id %}">
+            View Project Report
+        </a>
+
+    </div>
+
+{% empty %}
+
+    <div class="empty">
+        <p>No projects found.</p>
+    </div>
+
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Leader Projects</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px auto;
+        max-width: 1000px;
+        background-color: #f5f5f5;
+    }
+
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .team-leader-info {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
+    .project-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.project-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.project-card p {
+    margin: 8px 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 15px;
+    text-decoration: none;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #333;
+    color: white;
+}
+
+.empty {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+.section-header {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0;
+}
+.back-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: #333;
+    color: white;
+}
+@media (max-width: 600px) {
+
+    body {
+        margin: 20px;
+    }
+
+    .project-card {
+        padding: 15px;
+    }
+
+    .button {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+    <div class="page-header">
+    <h1>Team Leader</h1>
+</div>
+
+<div class="team-leader-info">
+    <p>
+        <strong>Email:</strong>
+        {{ team_leader.email }}
+    </p>
+</div>
+
+    <hr>
+
+    <div class="section-header">
+    <h2>Projects</h2>
+</div>
+    {% for project in projects %}
+
+    <div class="project-card">
+
+        <h3>
+            {{ project.project_number }} - {{ project.name }}
+        </h3>
+
+        <p>
+            <strong>Status:</strong>
+            {{ project.get_status_display }}
+        </p>
+
+        <p>
+            <strong>Planned:</strong>
+            {{ project.planned_quantity }}
+            {{ project.unit }}
+        </p>
+
+        <p>
+            <strong>Completed:</strong>
+            {{ project.completed_quantity }}
+            {{ project.unit }}
+        </p>
+
+        <a class="button"
+           href="{% url 'management_project_detail' project.id %}">
+            View Project Report
+        </a>
+
+    </div>
+
+{% empty %}
+
+    <div class="empty">
+        <p>No projects assigned.</p>
+    </div>
+
+{% endfor %}
+    <br>
+<div class="back-section">
+    <a class="back-button"
+       href="{% url 'management_dashboard' %}">
+        Back to Management Dashboard
+    </a>
+</div>
+</body>
+</html>
