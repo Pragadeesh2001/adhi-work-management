@@ -22,3 +22,13 @@ class MaterialForm(forms.ModelForm):
                 }
             ),
         }
+
+    def clean_quantity(self):
+        quantity = self.cleaned_data["quantity"]
+
+        if quantity <= 0:
+            raise forms.ValidationError(
+                "Material quantity must be greater than 0."
+            )
+
+        return quantity

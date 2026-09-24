@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from projects.models import Project
 from .forms import WorkerForm
-from .forms import Worker
+from .models import Worker
 
 @login_required
 def add_worker(request, project_id):
