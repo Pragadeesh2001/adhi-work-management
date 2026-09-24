@@ -25,3 +25,5 @@ Thumbs.db
 # celery
 celerybeat-schedule
 celerybeat-schedule.*
+
+staticfiles/
