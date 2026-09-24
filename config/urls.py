@@ -26,11 +26,11 @@ def logout_view(request):
 
 
 urlpatterns = [
+    path("", lambda request: redirect("login")),
     path("admin/", admin.site.urls),
     path("", include("projects.urls")),
-    path("",include("users.urls")),
+    path("", include("users.urls")),
     path("", include("workers.urls")),
     path("accounts/login/", login_view, name="login"),
     path("accounts/logout/", logout_view, name="logout"),
-    
 ]
