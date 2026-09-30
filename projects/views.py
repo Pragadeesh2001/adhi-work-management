@@ -82,7 +82,10 @@ def add_progress(request, project_id):
 
     if request.method == "POST":
 
-        form = ProgressForm(request.POST)
+        form = ProgressForm(
+            request.POST,
+            project=project
+        )
 
         if form.is_valid():
 
@@ -115,7 +118,9 @@ def add_progress(request, project_id):
             )
 
     else:
-        form = ProgressForm()
+        form = ProgressForm(
+            project=project
+        )
 
     return render(
         request,
@@ -146,7 +151,8 @@ def edit_progress(request, progress_id):
 
         form = ProgressForm(
             request.POST,
-            instance=progress
+            instance=progress,
+            project=progress.project
         )
 
         if form.is_valid():
@@ -182,7 +188,8 @@ def edit_progress(request, progress_id):
     else:
 
         form = ProgressForm(
-            instance=progress
+            instance=progress,
+            project=progress.project
         )
 
     return render(
@@ -194,7 +201,6 @@ def edit_progress(request, progress_id):
             "form": form,
         }
     )
-
 
 @login_required
 def delete_progress(request, progress_id):

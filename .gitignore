@@ -27,3 +27,8 @@ celerybeat-schedule
 celerybeat-schedule.*
 
 staticfiles/
+
+production_data.json
+production_data_clean.json
+production_data_no_users.json
+production_data_ready.json
