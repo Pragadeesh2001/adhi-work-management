@@ -7,7 +7,8 @@ from .views import (
     assign_project,
     change_project_status,
     login_view,
-    create_project
+    create_project,
+    create_team_leader,
 )
 
 
@@ -48,5 +49,10 @@ urlpatterns = [
     "management/project/create/",
     create_project,
     name="create_project"
+    ),
+    path(
+    "management/team-leader/create/",
+    create_team_leader,
+    name="create_team_leader"
     ),
 ]

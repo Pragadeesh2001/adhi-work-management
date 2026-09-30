@@ -260,14 +260,23 @@
 
 <hr>
 
-    {% for leader in team_leaders %}
-    <div class="section-header">
+<div class="section-header">
+
     <h2>Team Leaders</h2>
 
-    <a class="button" href="{% url 'create_project' %}">
-        + Create Project
-    </a>
+    <div>
+        <a class="button" href="{% url 'create_team_leader' %}">
+            + Add Team Leader
+        </a>
+
+        <a class="button" href="{% url 'create_project' %}">
+            + Create Project
+        </a>
+    </div>
+
 </div>
+
+{% for leader in team_leaders %}
 
     <div class="leader-card">
 
@@ -287,7 +296,6 @@
     </div>
 
 {% endfor %}
-
 <hr>
 
 <div class="section-header">

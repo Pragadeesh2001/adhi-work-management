@@ -1,3 +1,4 @@
+from .forms import TeamLeaderCreationForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Prefetch
@@ -325,6 +326,39 @@ def create_project(request):
     return render(
         request,
         "users/create_project.html",
+        {
+            "form": form
+        }
+    )
+
+
+@login_required
+def create_team_leader(request):
+
+    if request.user.role != "MANAGEMENT":
+        return render(
+            request,
+            "users/access_denied.html"
+        )
+
+    if request.method == "POST":
+
+        form = TeamLeaderCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(
+                "management_dashboard"
+            )
+
+    else:
+
+        form = TeamLeaderCreationForm()
+
+    return render(
+        request,
+        "users/create_team_leader.html",
         {
             "form": form
         }

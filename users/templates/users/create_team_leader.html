@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Team Leader</title>
+</head>
+
+<body>
+
+    <h1>Add Team Leader</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Create Team Leader
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'management_dashboard' %}">
+        Back to Management Dashboard
+    </a>
+
+</body>
+</html>
